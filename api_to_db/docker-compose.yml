@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  app:
+    container_name: api-to-db
+    # image: api-to-db:latest
+    build:
+      dockerfile: Dockerfile
+    # command: [ 'sh', '-c', 'python main.py']
+    env_file: 
+      - .env
+    volumes:
+      - .:/code
+    ports:
+      - '8000:8000'
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    name: mysql_net
+    external: true

@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+    mysql:
+        image: 'percona:8.0'
+        container_name: db-master
+        volumes:
+            - ./configs/master.cnf:/etc/my.cnf.d/repl.cnf
+            - ./configs/master.sql:/docker-entrypoint-initdb.d/start.sql
+        env_file:
+            - .env
+        networks:
+        - mysql_network
+
+    mysqlread1:
+        image: 'percona:8.0'
+        container_name: db-slave1
+        volumes:
+            - ./configs/slave1.cnf:/etc/my.cnf.d/repl.cnf
+            - ./configs/slave.sql:/docker-entrypoint-initdb.d/start.sql
+        depends_on:
+            - mysql
+        env_file:
+            - .env
+        networks:
+        - mysql_network
+
+    mysqlread2:
+        image: 'percona:8.0'
+        container_name: db-slave2
+        volumes:
+            - ./configs/slave2.cnf:/etc/my.cnf.d/repl.cnf
+            - ./configs/slave.sql:/docker-entrypoint-initdb.d/start.sql
+        depends_on:
+            - mysql
+        env_file:
+            - .env
+        networks:
+        - mysql_network
+
+networks:
+  mysql_network:
+    name: mysql_net

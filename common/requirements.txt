@@ -1,0 +1,5 @@
+sqlalchemy
+pymysql
+PyMySQL[rsa]
+pydantic
+faker

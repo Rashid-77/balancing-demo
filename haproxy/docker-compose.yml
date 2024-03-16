@@ -1,0 +1,20 @@
+# haproxy for mysql replication
+version: '3.1'
+
+services:
+  lb:
+    image: haproxy:2.4
+    container_name: haproxy_lb
+    hostname: lb
+    ports:
+      - "9999:9999"
+      - "33060:33060"
+    volumes:
+      - ./haproxy/:/usr/local/etc/haproxy/
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    name: mysql_net
+    external: true
